@@ -29,3 +29,8 @@ how to deal with circular dependencies in spring?
 1. lazy loading ?
 
 what is happening behind the scenes with secure-bundle ? how is spring able to connect to cassandra instance ? 
+
+
+### References
+1. https://openlibrary.org/developers/dumps
+2. 
