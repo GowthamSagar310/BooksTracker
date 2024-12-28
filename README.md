@@ -26,4 +26,6 @@ how to connect to local cassandra instance ?
 how to connect to cassandra instance in GCP without intermediary like datastax ? 
 
 how to deal with circular dependencies in spring? 
-1. lazy loading ? 
+1. lazy loading ?
+
+what is happening behind the scenes with secure-bundle ? how is spring able to connect to cassandra instance ? 
