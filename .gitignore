@@ -1,0 +1,10 @@
+target/
+
+# Intellij IDEA
+.idea
+*.iws
+*.iml
+*.ipr
+
+# secure bundle
+/src/main/resources/secure-connect.zip
