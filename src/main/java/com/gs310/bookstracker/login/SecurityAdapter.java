@@ -12,11 +12,15 @@ public class SecurityAdapter {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((req) -> {
-                    req.anyRequest().authenticated();
+                .authorizeHttpRequests((req) -> {req
+                        .requestMatchers("/").permitAll() // do not need to authenticate "/"
+                        .anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults())
-                .oauth2Login(Customizer.withDefaults());
+                .oauth2Login(Customizer.withDefaults())
+                .oauth2Login( oauth -> { oauth
+                    .defaultSuccessUrl("/user", true);
+                });
         return http.build();
     }
 
