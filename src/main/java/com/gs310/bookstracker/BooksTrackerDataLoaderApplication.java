@@ -5,7 +5,6 @@ import com.gs310.bookstracker.author.AuthorRepository;
 import com.gs310.bookstracker.book.Book;
 import com.gs310.bookstracker.book.BookRepository;
 import com.gs310.bookstracker.dataconnection.DataStaxDBProps;
-import com.typesafe.config.ConfigException;
 import jakarta.annotation.PostConstruct;
 
 import org.json.JSONArray;
@@ -69,11 +68,11 @@ public class BooksTrackerDataLoaderApplication {
 		SpringApplication.run(BooksTrackerDataLoaderApplication.class, args);
 	}
 
-	@Bean
-	public CqlSessionBuilderCustomizer sessionBuilderCustomizer(DataStaxDBProps astraProperties) {
-		Path bundle = astraProperties.getSecureConnectBundle().toPath();
-		return builder -> builder.withCloudSecureConnectBundle(bundle);
-	}
+//	@Bean
+//	public CqlSessionBuilderCustomizer sessionBuilderCustomizer(DataStaxDBProps astraProperties) {
+//		Path bundle = astraProperties.getSecureConnectBundle().toPath();
+//		return builder -> builder.withCloudSecureConnectBundle(bundle);
+//	}
 
 	private void loadAuthorsData() {
 
@@ -110,8 +109,6 @@ public class BooksTrackerDataLoaderApplication {
 		} catch (IOException e) {
 			e.printStackTrace(); // move on to the next line for now.
 		}
-
-
 	}
 
 	private void loadBooksData() {
@@ -187,20 +184,20 @@ public class BooksTrackerDataLoaderApplication {
 
 	}
 
-	@PostConstruct
-	public void start() {
-
-		//  Dummy record
-		//	Author author = new Author();
-		//	author.setAuthorId("1234");
-		//	author.setName("gowtham");
-		//	author.setPersonalName("gs310");
-		//	authorRepository.save(author);
-
-		// loadAuthorsData();
-		loadBooksData();
-
-	}
+//	@PostConstruct
+//	public void start() {
+//
+//		//  Dummy record
+//		//	Author author = new Author();
+//		//	author.setAuthorId("1234");
+//		//	author.setName("gowtham");
+//		//	author.setPersonalName("gs310");
+//		//	authorRepository.save(author);
+//
+//		// loadAuthorsData();
+//		loadBooksData();
+//
+//	}
 
 	// helper function to get the author ids from book record
 	private String getAuthorId(Map<?, ?> author) {
