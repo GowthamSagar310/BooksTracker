@@ -11,9 +11,8 @@
 
     <h1>  Books Tracker App  </h1>
     <p> Welcome to Books Tracker App. Login to Continue</p>
-    <div>
-        With Github: <a href="/oauth2/authorization/github"> Click Here </a>
-    </div>
+    <div th:insert="components/book-search-bar :: search-panel"></div>
+    <div> With Github: <a href="/oauth2/authorization/github"> Click Here </a> </div>
 
 </body>
 </html>
