@@ -1,11 +1,17 @@
 package com.gs310.bookstracker.book;
 
+import com.gs310.bookstracker.useractivity.UserActivity;
+import com.gs310.bookstracker.useractivity.UserActivityPrimaryKey;
+import com.gs310.bookstracker.useractivity.UserActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Controller
@@ -28,8 +34,11 @@ public class BookController {
     @Autowired
     BookRepository bookRepository;
 
+    @Autowired
+    UserActivityRepository userActivityRepository;
+
     @GetMapping(value = "/books/{bookId}")
-    public String getBook(@PathVariable String bookId, Model model) {
+    public String getBook(@PathVariable String bookId, Model model, @AuthenticationPrincipal OAuth2User principal) {
         Optional<Book> optionalBook =  bookRepository.findById(bookId);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
@@ -39,6 +48,34 @@ public class BookController {
             }
             model.addAttribute("coverImage", coverImageUrl);
             model.addAttribute("book", book);
+
+            // if the user is logged-in, send the loginID
+            if (principal != null && principal.getAttribute("login") != null) {
+                // why do we need the whole principal.getAttribute("login") ?
+                // boolean value not enough ?
+                model.addAttribute("loginId", principal.getAttribute("login"));
+
+
+                // if the user have read this book already / have some form of interaction with the book
+                // we need to display that, if he is logged in.
+
+                // find the activity information user UserActivityPrimaryKey
+
+                UserActivityPrimaryKey userActivityPrimaryKey = new UserActivityPrimaryKey();
+                userActivityPrimaryKey.setUserId(principal.getAttribute("login"));
+                userActivityPrimaryKey.setBookId(bookId);
+
+                Optional<UserActivity> optionalUserActivity = userActivityRepository.findById(userActivityPrimaryKey);
+
+                if (optionalUserActivity.isPresent()) {
+                    System.out.println(optionalUserActivity.get());
+                    model.addAttribute("userActivity", optionalUserActivity.get());
+                } else {
+                    System.out.println("not present");
+                    model.addAttribute("userActivity", new UserActivity());
+                }
+
+            }
             return "book";
         }
         return "book-not-found";

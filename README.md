@@ -28,8 +28,16 @@ how to connect to cassandra instance in GCP without intermediary like datastax ?
 how to deal with circular dependencies in spring? 
 1. lazy loading ?
 
-what is happening behind the scenes with secure-bundle ? how is spring able to connect to cassandra instance ? 
+what is happening behind the scenes with secure-bundle ? how is spring able to connect to cassandra instance ?
+add filters in search
+- search in title
+- search authors 
+- search in content
 
+Design Principle 
+
+What can be done more ?
+Contact 
 
 ### References
 1. https://openlibrary.org/developers/dumps
