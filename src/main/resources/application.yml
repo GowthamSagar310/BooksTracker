@@ -20,14 +20,20 @@ spring:
     connection:
       connect-timeout: 30s
       init-query-timeout: 30s
+    username: cassandra
+    password: cassandra
+    local-datacenter: datacenter1
 
 
 datastax.astra:
   secure-connect-bundle: src/main/resources/secure-connect.zip
 
-astra.db:
-  id: <db-id>
-  region: <db-region>
-  keyspace: main
-  application.token: <application-token>
+  # local data source
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
 

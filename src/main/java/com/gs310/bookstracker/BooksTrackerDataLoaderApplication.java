@@ -4,7 +4,7 @@ import com.gs310.bookstracker.author.Author;
 import com.gs310.bookstracker.author.AuthorRepository;
 import com.gs310.bookstracker.book.Book;
 import com.gs310.bookstracker.book.BookRepository;
-import com.gs310.bookstracker.dataconnection.DataStaxDBProps;
+//import com.gs310.bookstracker.dataconnection.DataStaxDBProps;
 import jakarta.annotation.PostConstruct;
 
 import org.json.JSONArray;
@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 // what does this annotation do ?
 // can I use spring batch ? to upload data into cassandra ?
 @SpringBootApplication
-@EnableConfigurationProperties(value = DataStaxDBProps.class)
+//@EnableConfigurationProperties(value = DataStaxDBProps.class)
 public class BooksTrackerDataLoaderApplication {
 
 	@Autowired
@@ -44,7 +44,6 @@ public class BooksTrackerDataLoaderApplication {
 
 	private final String authorDataLocation = "src/main/resources/testdata/authors-data-mini.txt";
 	private final String worksDataLocation = "src/main/resources/testdata/books-data-mini.txt";
-
 
 	/*
 	* if we have to get the location / path from property file, we can use the @Value annotation
@@ -194,9 +193,8 @@ public class BooksTrackerDataLoaderApplication {
 //		//	author.setPersonalName("gs310");
 //		//	authorRepository.save(author);
 //
-//		// loadAuthorsData();
+//	 	loadAuthorsData();
 //		loadBooksData();
-//
 //	}
 
 	// helper function to get the author ids from book record

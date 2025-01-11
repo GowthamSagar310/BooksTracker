@@ -71,7 +71,6 @@ public class BookController {
                     System.out.println(optionalUserActivity.get());
                     model.addAttribute("userActivity", optionalUserActivity.get());
                 } else {
-                    System.out.println("not present");
                     model.addAttribute("userActivity", new UserActivity());
                 }
 

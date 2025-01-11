@@ -21,7 +21,7 @@ public class SecurityAdapter {
                 .httpBasic(Customizer.withDefaults())
                 .oauth2Login(Customizer.withDefaults())
                 .oauth2Login( oauth -> { oauth
-                    .defaultSuccessUrl("/user", true);
+                    .defaultSuccessUrl("/user", true); // if successful login, take to user's home page
                 })
                 .logout(l -> l
                         .logoutSuccessUrl("/").permitAll()
