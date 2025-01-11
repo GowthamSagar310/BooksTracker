@@ -1,5 +1,5 @@
 # BooksTracker
-track your book reading habit 
+Track your reading habit and organize all your books in one place. 
 
 pipeline 
 1. load the data (author and book data in that order)
@@ -7,7 +7,6 @@ pipeline
    2. get the secure-connect bundle (this is independent of spring) from datastax to connect to the instance
    3. 
 2. search the data using openlibrary search api (move to elasticsearch instance later) 
-3.  
 
 format of data:
 books (file) 
@@ -22,9 +21,7 @@ how to connect to cassandra instance through datastax ?
 what is spring data ?
 why cassandra ? why not a RDMS like postgres ? 
 
-how to connect to local cassandra instance ? 
 how to connect to cassandra instance in GCP without intermediary like datastax ? 
-
 how to deal with circular dependencies in spring? 
 1. lazy loading ?
 
@@ -33,6 +30,10 @@ add filters in search
 - search in title
 - search authors 
 - search in content
+
+TODO
+- [x] connect to local cassandra
+
 
 Design Principle 
 
