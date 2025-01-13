@@ -25,7 +25,6 @@ public class UserEntity {
     private String password;
     private String role;
 
-
-    private boolean isVerified; // for password recovery purposes
+    // private boolean isVerified; // for password recovery purposes
 
 }

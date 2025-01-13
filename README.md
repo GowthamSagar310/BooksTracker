@@ -5,7 +5,6 @@ pipeline
 1. load the data (author and book data in that order)
    1. create a cassandra instance in GCP using datastax 
    2. get the secure-connect bundle (this is independent of spring) from datastax to connect to the instance
-   3. 
 2. search the data using openlibrary search api (move to elasticsearch instance later) 
 
 format of data:
@@ -27,18 +26,24 @@ how to deal with circular dependencies in spring?
 
 what is happening behind the scenes with secure-bundle ? how is spring able to connect to cassandra instance ?
 add filters in search
-- search in title
-- search authors 
-- search in content
 
 TODO
 - [x] connect to local cassandra
-
+- [x] add postgres to store user identity information
+- [x] add support for sign-in / sign-up
+- [ ] add sign in with google support
+- [ ] search inside content 
+- [ ] search using authors 
+- [x] search using title 
+- [ ] add local elastic search support  
 
 Design Principle 
 
 What can be done more ?
-Contact 
+
+#### Contact
+- gmail: gowthamsagartummeda@gmail.com
+- website: gowthamsagar.com (under construction)
 
 ### References
 1. https://openlibrary.org/developers/dumps
