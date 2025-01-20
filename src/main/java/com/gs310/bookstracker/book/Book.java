@@ -1,7 +1,6 @@
 package com.gs310.bookstracker.book;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.cassandra.core.cql.CassandraAccessor;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Column;

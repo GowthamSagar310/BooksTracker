@@ -7,13 +7,13 @@ spring:
       client:
         registration:
           github:
-            client-id: <client-id>
-            client-secret: <client-secret>
+            client-id: Iv23lipJveRLJOfioFzY
+            client-secret: d81fa93ffe05d727bfa50ea8edb4d871ea694b92
 
   cassandra:
     keyspace-name: main
-    username: <username>
-    password: <password>
+#    username: BMxncrPnPeKttyYiSjKvKQrD
+#    password: rQ5xIe,A5Iya1MuANneeuW.FvZq6_EbTH,KwC1buC+wKbK2ji4,23JMjwQmXML5Av9YWT4sc1.Mwy+p.RoLWN+9R+zOa,k5Yzgdzc3EronEapxT_w1c9nvAgYfl6QsOF
     schema-action: create_if_not_exists
     request:
       timeout: 30s
@@ -38,6 +38,16 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
 
+# third party data sources
+#datastax.astra:
+#  secure-connect-bundle: src/main/resources/secure-connect.zip
+#
+#astra.db:
+#  id: 620e635b-c78b-485e-9e05-fa30299f1932
+#  region: us-east1
+#  keyspace: main
+#  application.token: AstraCS:BMxncrPnPeKttyYiSjKvKQrD:1641223ddcf693ceb371f4dca32427b7222b46d203db3676ae21517b39132922
+#
 
 logging:
   level:

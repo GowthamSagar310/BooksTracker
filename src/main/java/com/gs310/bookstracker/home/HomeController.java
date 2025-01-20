@@ -30,9 +30,9 @@ public class HomeController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && authentication.getPrincipal() != null) {
             Object principal = authentication.getPrincipal();
-            System.out.println(principal);
             if (principal instanceof OAuth2User) {
                 OAuth2User oAuth2User = (OAuth2User) principal;
+                // change this username ?
                 userId = oAuth2User.getAttribute("mail");
             } else if (principal instanceof UserDetails) {
                 UserDetails userDetails = (UserDetails) principal;

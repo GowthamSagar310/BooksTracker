@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,7 +55,7 @@ public class UserActivityController {
         // user activity with book
         UserActivity userActivity = new UserActivity();
         UserActivityPrimaryKey userActivityPrimaryKey = new UserActivityPrimaryKey();
-        userActivityPrimaryKey.setUserId(principal.getAttribute("login"));
+        userActivityPrimaryKey.setUserId(principal.getAttribute("login")); // todo: lowercase
         userActivityPrimaryKey.setBookId(bookId);
 
         userActivity.setPrimaryKey(userActivityPrimaryKey);
