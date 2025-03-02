@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sf="http://www.w3.org/1999/xhtml" lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -54,9 +54,10 @@
             <div class="col-md-3 d-flex align-items-center" style="padding: 2rem 0">
                 <form th:attr="action=@{/login}" method="POST">
 
-                    <div th:if="${param.error eq 'email_exists'}" class="alert alert-danger">
-                        An account with that email address already exists. Please log in with your existing username and
-                        password.
+                    <!-- Check if the login credentials are invalid -->
+                    <div th:if="${#strings.toString(param.error)} == 'invalid_credentials'" class="alert alert-danger"
+                        style="height: 50px;">
+                        Invalid credentials. Please try again.
                     </div>
 
                     <div class="mb-3">

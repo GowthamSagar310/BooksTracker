@@ -12,7 +12,6 @@ import org.springframework.web.reactive.function.client.WebClientException;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class SearchController {
@@ -61,7 +60,7 @@ public class SearchController {
                                 bookResult.setCover_i(coverId);
                             }
                     )
-                    .collect(Collectors.toList());
+                    .toList();
             model.addAttribute("searchResults", books);
             return "search";
         } catch (WebClientException e) {
@@ -70,7 +69,7 @@ public class SearchController {
             return "error/error";
         } catch (Exception e) {
             model.addAttribute("errorMessage", "An unexpected error occurred during the search. Please try again later.");
-            return "error/error";
+            return "error/error"; 
         }
 
     }

@@ -10,16 +10,14 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.gs310.bookstracker.account.CustomAuthenticationFailureHandler;
 import com.gs310.bookstracker.account.CustomOAuth2UserService;
 
 @Configuration
 public class ProjectConfig {
     
-    @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, CustomOAuth2UserService customOAuth2UserService, CustomAuthenticationFailureHandler authenticationFailureHandler) throws Exception {
         http
                 .authorizeHttpRequests((req) -> {req
                         .requestMatchers("/", "/register", "/sign-up").permitAll() // do not need to authenticate "/"
@@ -29,8 +27,9 @@ public class ProjectConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> form
-                        .loginProcessingUrl("/login") // This is the endpoint that is used to process the login
-                        .defaultSuccessUrl("/home", true) // Redirect on successful login
+                        .loginProcessingUrl("/login") // This is the endpoint that is used to process the login. 
+                        .defaultSuccessUrl("/home", true) // Redirect on successful login. 
+                        .failureHandler(authenticationFailureHandler) // Redirect on failed login. 
                         .permitAll()
                 )
                 .oauth2Login(Customizer.withDefaults())
