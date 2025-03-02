@@ -5,7 +5,6 @@ import com.gs310.bookstracker.author.AuthorRepository;
 import com.gs310.bookstracker.book.Book;
 import com.gs310.bookstracker.book.BookRepository;
 //import com.gs310.bookstracker.dataconnection.DataStaxDBProps;
-import jakarta.annotation.PostConstruct;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,9 +12,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.cassandra.CqlSessionBuilderCustomizer;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 
 import java.io.BufferedReader;
 import java.io.File;
