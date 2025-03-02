@@ -65,8 +65,8 @@ public class LoginController {
             modelAndView.addObject("success", false);
             return modelAndView;
         } catch (Exception e) {
+            e.printStackTrace();
             modelAndView.addObject("message", "User registration failed.");
-            // TODO: log the exception trace.
             modelAndView.addObject("success", false);
             return modelAndView;
         }

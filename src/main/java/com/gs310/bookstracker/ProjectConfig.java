@@ -1,5 +1,6 @@
 package com.gs310.bookstracker;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -9,8 +10,13 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.gs310.bookstracker.account.CustomOAuth2UserService;
+
 @Configuration
 public class ProjectConfig {
+    
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -29,6 +35,10 @@ public class ProjectConfig {
                 )
                 .oauth2Login(Customizer.withDefaults())
                 .oauth2Login( oauth -> { oauth
+                        .userInfoEndpoint(userInfoEndpoint ->
+                            userInfoEndpoint
+                                .userService(customOAuth2UserService)
+                        )
                         .defaultSuccessUrl("/home", true); // if successful login, take to user's home page
                 })
                 .logout(l -> l

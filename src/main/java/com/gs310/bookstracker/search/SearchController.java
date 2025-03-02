@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientException;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -37,33 +38,40 @@ public class SearchController {
     public String getSearchResults(@RequestParam String title, Model model) {
 
         // once we get the response, we can convert the search results into objects automatically
+        try {
+            Mono<SearchResult> searchResultMono = this.webClient.get()
+                    .uri("?title={title}", title)
+                    .retrieve()
+                    .bodyToMono(SearchResult.class);
+            SearchResult searchResult = searchResultMono.block();
 
-        Mono<SearchResult> searchResultMono = this.webClient.get()
-                .uri("?title={title}", title)
-                .retrieve()
-                .bodyToMono(SearchResult.class);
-        SearchResult searchResult = searchResultMono.block();
-
-        List<SearchResultBook> books = searchResult.getDocs()
-                        .stream()
-                        .limit(10)
-                        .map(
-                                bookResult -> {
-                                    bookResult.setKey(bookResult.getKey().replace("/works/", ""));
-                                    String coverId = bookResult.getCover_i();
-                                    if (StringUtils.hasText(coverId)) {
-                                        coverId = COVER_IMAGE_BASE_URL + coverId + "-M.jpg";
-                                    } else {
-                                        coverId = "/images/no-image.png";
-                                    }
-                                    bookResult.setCover_i(coverId);
-                                    return bookResult;
+            assert searchResult != null;
+            List<SearchResultBook> books = searchResult.getDocs()
+                    .stream()
+                    .limit(10)
+                    .peek(
+                            bookResult -> {
+                                bookResult.setKey(bookResult.getKey().replace("/works/", ""));
+                                String coverId = bookResult.getCover_i();
+                                if (StringUtils.hasText(coverId)) {
+                                    coverId = COVER_IMAGE_BASE_URL + coverId + "-M.jpg";
+                                } else {
+                                    coverId = "/images/no-image.png";
                                 }
-                        )
-                        .collect(Collectors.toList());
-
-        model.addAttribute("searchResults", books);
-        return "search";
+                                bookResult.setCover_i(coverId);
+                            }
+                    )
+                    .collect(Collectors.toList());
+            model.addAttribute("searchResults", books);
+            return "search";
+        } catch (WebClientException e) {
+            // timeouts, connection refused, etc.
+            model.addAttribute("errorMessage", "Failed to connect to the OpenLibrary API. Please try again later.");
+            return "error/error";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An unexpected error occurred during the search. Please try again later.");
+            return "error/error";
+        }
 
     }
 

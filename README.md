@@ -24,6 +24,12 @@ Track your reading habits and organize all your books in one place.
 - [x] Search using title
 - [ ] Add local Elasticsearch support
 
+## Can be done but not in Scope
+
+- [] Use Spring Batch to load the data.
+- [] Use Recommedation Engines to suggest books based on reading history.
+- [] Deploy the project in GCP. 
+
 ## Contact
 
 - Gmail: [gowthamsagartummeda@gmail.com](mailto:gowthamsagartummeda@gmail.com)
