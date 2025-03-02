@@ -32,4 +32,5 @@ Track your reading habits and organize all your books in one place.
 ## References
 
 1. [OpenLibrary Dumps](https://openlibrary.org/developers/dumps)
-2. [YouTube Playlist](https://youtu.be/uwuF9xa3Vyw?t=2970)
+2. [Introduction to Apache Cassandra](https://youtu.be/uwuF9xa3Vyw?t=2970)
+3. [Spring Boot + Cassandra App – Java Brains](https://www.youtube.com/playlist?list=PLKY246dKRk4UJ7PmDZGhgczDoLx5bmmXy)
