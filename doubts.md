@@ -63,13 +63,51 @@ primary-key = partition-key + clustering-key (optional)
 - clustering keys can be used for when querying data by date ranges or such.
 --- 
 
+Doubts
+---
+1. What is Datastax Astra ?
+- DataStax Astra - DBaas (Database as a Service) built on Apache Cassandra.
+- We can create a Cassandra database instance in the cloud using DataStax Astra.
+- Highly available, scalable and secure.
+- Supports multiple cloud providers like AWS, GCP, Azure.
+- We connect to the database instance using the secure bundle (which contains the necessary configurations and certificates to make a secure connection to the database) provided by DataStax Astra.
+---
+2. what is spring data ?
+- Spring Data is a part of the Spring Framework that simplifies data access layer by providing easy-to-use abstractions for various data stores like RDBMS, NoSQL, etc.
+- Spring Data is a broader project focused on simplifying data access across various data stores, both relational and NoSQL.
+- Spring Data JPA, Spring Data Cassandra, Spring Data Redis, Spring Data MongoDB, etc. are some of the modules provided by Spring Data.
+- Spring Data JPA is specifically designed for RDBMS, while for other NoSQL databases, Spring Data Cassandra, Spring Data MongoDB etc. are used. 
+- Spring Data JPA is implementation JPA (Java Persistence API) for RDBMS.
+- [Spring Data JPA vs Hibernate](https://stackoverflow.com/questions/23862994/whats-the-difference-between-hibernate-and-spring-data-jpa)
+---
+3. JDBC vs JPA vs Hibernate vs Spring Data JPA
+- JDBC (Java Database Connectivity):
+    - Low-level API for interacting with databases.
+    - Requires writing SQL queries and handling connections, statements, result sets, etc.
+    - Tedious and error-prone.
+    - Manual mapping of results to Java objects
+- JPA (Java Persistence API):
+    - Standard API for object-relational mapping in Java.
+    - Often avoids direct SQL, uses JPQL/Criteria API. 
+    - Provides a set of annotations to map Java objects to database tables.
+    - Reduces boilerplate code and simplifies data access layer.
+- Hibernate (ORM Framework):
+    - Popular ORM framework that implements JPA.
+    - Provides additional features like caching, lazy loading, etc.
+    - Simplifies database interactions and improves performance.
+- Spring Data JPA (Data Access Layer):
+   - Spring Data JPA builds upon JPA implementations like Hibernate, using them as the underlying ORM.
+   - It reduces boilerplate code through conventions and repository interfaces.
+   - simplifying database access by automatically generating common queries and handling transactions (findUserByEmail, saveUser, etc.)
+---
+4. Why cassandra ? why not a RDMS like postgres ?
+---
+5. How to connect to Cassandra instance in GCP without intermediary like datastax ?
+- can use BigTable or Datastore in GCP or host an VM with a cassandra instance running, but not recommended, as it is not completely managed. (need to handle backups, scaling, etc.)
+- [GCP guide to get started with cassandra in a compute instance](https://github.com/GoogleCloudPlatform/compute-cassandra-python)
+- [BigTable Documentation](https://cloud.google.com/bigtable/docs/reference/)
+---
 
-1. what is datastax astra ?
-2. how to connect to cassandra instance through datastax ? 
-3. what is spring data ? 
-4. why cassandra ? why not a RDMS like postgres ?
-5. how to connect to cassandra instance in GCP without intermediary like datastax ? 
-6. how to deal with circular dependencies in spring?
-   1. lazy loading ?
-7. what is happening behind the scenes with secure-bundle ? how is spring able to connect to cassandra instance ?
-add filters in search ? 
+6. Circular Dependency in Spring
+- If Bean A depends on Bean B and Bean B depends on Bean A, it creates a circular dependency. 
+   1. lazy loading 

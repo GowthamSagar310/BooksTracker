@@ -63,11 +63,12 @@ public class BooksTrackerDataLoaderApplication {
 		SpringApplication.run(BooksTrackerDataLoaderApplication.class, args);
 	}
 
-//	@Bean
-//	public CqlSessionBuilderCustomizer sessionBuilderCustomizer(DataStaxDBProps astraProperties) {
-//		Path bundle = astraProperties.getSecureConnectBundle().toPath();
-//		return builder -> builder.withCloudSecureConnectBundle(bundle);
-//	}
+	//  This is purely to connect to database hosted by DataStax https://www.datastax.com/ using their secure bundle
+	//	@Bean
+	//	public CqlSessionBuilderCustomizer sessionBuilderCustomizer(DataStaxDBProps astraProperties) {
+	//		Path bundle = astraProperties.getSecureConnectBundle().toPath();
+	//		return builder -> builder.withCloudSecureConnectBundle(bundle);
+	//	}
 
 	private void loadAuthorsData() {
 
@@ -86,7 +87,6 @@ public class BooksTrackerDataLoaderApplication {
 
 		try (BufferedReader reader = Files.newBufferedReader(path)) {
 			reader.lines().forEach(line -> {
-
 				String jsonString = line.substring(line.indexOf("{"));
 				try {
 					JSONObject jsonObject = new JSONObject(jsonString);
@@ -127,6 +127,7 @@ public class BooksTrackerDataLoaderApplication {
 						book.setDescription(descriptionObj.optString("value"));
 					}
 
+					// created at
 					JSONObject publishedDateObj = jsonObject.optJSONObject("created");
 					if (publishedDateObj != null) {
 						String date = publishedDateObj.getString("value");
@@ -134,6 +135,8 @@ public class BooksTrackerDataLoaderApplication {
 					}
 
 					// cover ids (book covers)
+					// multiple cover images for a single book.
+					// can be used for recommendations. (recommendation engine)
 					JSONArray coversJSONArr = jsonObject.optJSONArray("covers");
 					if (coversJSONArr != null) {
 						List<String> coverIds = coversJSONArr
