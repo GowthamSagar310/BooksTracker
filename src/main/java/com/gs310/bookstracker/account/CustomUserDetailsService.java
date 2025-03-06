@@ -18,12 +18,21 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
-                () -> new UsernameNotFoundException("User not found with username: " + username)
+    public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
+
+        // check if the identifier is an email or username
+        String identifierType = identifier.contains("@") ? "email" : "username";
+        UserEntity userEntity = userRepository.findByUsername(identifier).or(() -> userRepository.findByEmail(identifier)).orElseThrow(
+                () -> new UsernameNotFoundException("User not found with " + identifierType + " : " + identifier)
         );
+
         // convert the account into UserDetails / User
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(userEntity.getRole())); // roles
         return new User(userEntity.getEmail(), userEntity.getPassword(), authorities);
     }
+
+    // loadUserByEmail is not available in UserDetailsService
+
+
+
 }

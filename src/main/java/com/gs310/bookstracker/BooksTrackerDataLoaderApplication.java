@@ -4,11 +4,10 @@ import com.gs310.bookstracker.author.Author;
 import com.gs310.bookstracker.author.AuthorRepository;
 import com.gs310.bookstracker.book.Book;
 import com.gs310.bookstracker.book.BookRepository;
-//import com.gs310.bookstracker.dataconnection.DataStaxDBProps;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,6 +36,9 @@ public class BooksTrackerDataLoaderApplication {
 
 	@Autowired
 	private BookRepository bookRepository;
+
+	@Autowired
+	private Logger logger;
 
 	private final String authorDataLocation = "src/main/resources/testdata/authors-data-mini.txt";
 	private final String worksDataLocation = "src/main/resources/testdata/books-data-mini.txt";
@@ -98,11 +100,11 @@ public class BooksTrackerDataLoaderApplication {
 					authorRepository.save(author);
 
 				} catch (JSONException e) { // todo: move this to JSONException
-					e.printStackTrace();
+					logger.error(e.getMessage());
 				}
 			});
 		} catch (IOException e) {
-			e.printStackTrace(); // move on to the next line for now.
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -172,11 +174,11 @@ public class BooksTrackerDataLoaderApplication {
 					}
 					bookRepository.save(book);
 				} catch (JSONException e) {
-					e.printStackTrace();
+					logger.error(e.getMessage());
 				}
 			});
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 

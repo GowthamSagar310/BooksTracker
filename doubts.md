@@ -111,3 +111,41 @@ Doubts
 6. Circular Dependency in Spring
 - If Bean A depends on Bean B and Bean B depends on Bean A, it creates a circular dependency. 
    1. lazy loading 
+
+---
+7. SLF4J vs Logback vs Log4j
+- SLF4J (Simple Logging Facade for Java):
+    - An abstraction layer for various logging frameworks.
+    - Provides a simple API for logging, allowing the underlying logging framework to be changed without changing the application code.
+- Logback:
+    - A logging framework developed by the creator of Log4j.
+    - It is the successor to Log4j and provides more features and better performance.
+    - Logback is the default logging framework in Spring Boot (which is used by SLF4J).
+---
+
+## Entities involved 
+   1. Book (cassandra)
+   2. Author (cassandra)
+   3. UserActivity (cassandra)
+   4. User (postgres)
+
+## Details Regarding User Registration
+- User enters email, password, username to create an account. User can log in using email / username along with password.
+- User passwords are encrypted using bcrypt hashing algorithm before storing in the database.
+- "UserEntity" file contains the schema for the "users" table in the postgres database. JPA Entity. 
+- "UserRepository" is used to interact with the "users" table in the database. Spring Data provides these CRUD operations. userRepository.save(), userRepository.findByEmail(), userRepository.findByUsername(), etc.
+- 
+- "LoginController" is used to handle the login requests involving sign-in, sign-up, sign-out, forgot password, reset password. 
+- 
+- "CustomAuthenticationFailureHandler" is used to handle cases where the user authentication fails. If the user enters wrong credentials, the authentication failure handler is used to display custom error message. 
+- "CustomOAuth2UserService" is used to check if the email of the user is already present in the database before signing up using "Sign-in with Github" / "Sign-in with Google". If the email is already present in the user table, we do not want to create a new user using this mail, as this will create discrepancies in the database, where the same user can have multiple accounts. (multiple records in the database). To avoid problems like merging accounts, maintaining OAuth provider details, and to keep it simple, multiple accounts for the same user is avoided. 
+- email, username are unique in the user table.
+
+--- 
+- [ ] Search for books by author, title, content. 
+  - [ ] search using openlibrary API
+  - [ ] search using local elastic search instance 
+- [ ] Sign-in, Sign-up, Sign-out, forgot password, reset password.
+  - [ ] Sign-in with google, github. 
+- [ ] Rate books, start date, end date, mark reading status. 
+- [ ] Show user's past books read, currently reading in home page after login.

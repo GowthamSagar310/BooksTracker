@@ -60,9 +60,14 @@
                         Invalid credentials. Please try again.
                     </div>
 
+                    <!-- either username or email -->
+                    <!--
+                        spring form login (UsernamePasswordAuthenticationFilter) expects username / email
+                        to be submitted in the request with parameter names as 'username' and 'password'
+                    -->
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                        <input type="text" name="username" class="form-control" id="username" placeholder="Dragon123"
+                        <label for="username_email" class="form-label">Username / Email <span class="text-danger">*</span></label>
+                        <input type="text" name="username" class="form-control" id="username_email" placeholder="Dragon123 / dragon123@abc.com"
                             required>
                     </div>
 
