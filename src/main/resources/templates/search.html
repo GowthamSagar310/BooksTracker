@@ -12,17 +12,22 @@
 
   <div class="px-4 py-5 my-5 text-center">
 
-    <h1 class="display-5 fw-bold">BooksTracker - My books</h1>
+    <h1 class="display-5 fw-bold">BooksTracker - All books</h1>
     <div th:insert="components/book-search-bar :: search-panel"></div>
 
-    <div class="card-group"
+    <!-- Display "No results found" message -->
+    <div th:if="${noResults}" class="alert alert-info text-center mx-auto" role="alert" style="max-width: 600px;">
+      No results found for your search query.
+    </div>
+
+    <div th:unless="${noResults}" class="card-group"
       style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 30px; padding: 20px;">
       <div class="card" style="flex: 1 1 calc(20% - 30px); margin: 15px; max-width: 300px;"
         th:each="book: ${searchResults}">
-        <img th:src="${book.cover_i}" class="card-img-top img-fluid" alt="...">
+        <img th:src="${book.coverId}" class="card-img-top img-fluid" alt="...">
         <div class="card-body">
-          <h5 class="card-title" th:text="${book.title}">Card title</h5>
-          <a href="#" th:href="@{'/books/' + ${book.key}}" class="btn btn-primary">View book</a>
+          <h5 class="card-title" th:text="${book.name}">Card title</h5>
+          <a href="#" th:href="@{'/books/' + ${book.bookId}}" class="btn btn-primary">View book</a>
         </div>
       </div>
     </div>

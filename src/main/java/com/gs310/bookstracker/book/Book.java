@@ -109,7 +109,7 @@ public class Book {
         return this;
     }
 
-    public List<String> getAuthorId() {
+    public List<String> getAuthorIds() {
         return authorIds;
     }
 

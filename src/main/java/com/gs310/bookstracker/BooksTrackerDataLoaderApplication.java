@@ -4,6 +4,11 @@ import com.gs310.bookstracker.author.Author;
 import com.gs310.bookstracker.author.AuthorRepository;
 import com.gs310.bookstracker.book.Book;
 import com.gs310.bookstracker.book.BookRepository;
+import com.gs310.bookstracker.esearch.EsAuthor;
+import com.gs310.bookstracker.esearch.EsAuthorRepository;
+import com.gs310.bookstracker.esearch.EsBook;
+import com.gs310.bookstracker.esearch.EsBookRepository;
+import jakarta.annotation.PostConstruct;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +41,13 @@ public class BooksTrackerDataLoaderApplication {
 
 	@Autowired
 	private BookRepository bookRepository;
+
+	// search
+	@Autowired
+	EsAuthorRepository esAuthorRepository;
+
+	@Autowired
+	EsBookRepository esBookRepository;
 
 	@Autowired
 	private Logger logger;
@@ -93,13 +105,21 @@ public class BooksTrackerDataLoaderApplication {
 				try {
 					JSONObject jsonObject = new JSONObject(jsonString);
 
+					// save book into cassandra
 					Author author = new Author();
 					author.setAuthorId(jsonObject.optString("key").replace("/authors/", ""));
 					author.setName(jsonObject.optString("name"));
 					author.setPersonalName(jsonObject.optString("personal_name")); // not all records have personal_name
 					authorRepository.save(author);
 
-				} catch (JSONException e) { // todo: move this to JSONException
+					// save book into elastic search
+					EsAuthor esAuthor = new EsAuthor();
+					esAuthor.setAuthorId(author.getAuthorId());
+					esAuthor.setName(author.getName());
+					esAuthor.setPersonalName(author.getPersonalName());
+					esAuthorRepository.save(esAuthor);
+
+				} catch (JSONException e) {
 					logger.error(e.getMessage());
 				}
 			});
@@ -172,7 +192,23 @@ public class BooksTrackerDataLoaderApplication {
 								.collect(Collectors.toList());
 						book.setAuthorNames(authorNames);
 					}
+
+					// save book into cassandra
 					bookRepository.save(book);
+
+					// save book into elastic search
+					EsBook esBook = new EsBook();
+					esBook.setBookId(book.getBookId());
+					esBook.setName(book.getName());
+					esBook.setDescription(book.getDescription());
+					esBook.setPublishedDate(book.getPublishedDate());
+					esBook.setAuthorNames(book.getAuthorNames());
+					esBook.setAuthorIds(book.getAuthorIds());
+					if (book.getCoverIds() != null && !book.getCoverIds().isEmpty()) {
+						esBook.setCoverId(book.getCoverIds().get(0)); // only the first cover image
+					}
+					esBookRepository.save(esBook);
+
 				} catch (JSONException e) {
 					logger.error(e.getMessage());
 				}
@@ -180,23 +216,21 @@ public class BooksTrackerDataLoaderApplication {
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 		}
-
-
 	}
 
-//	@PostConstruct
-//	public void start() {
-//
-//		//  Dummy record
-//		//	Author author = new Author();
-//		//	author.setAuthorId("1234");
-//		//	author.setName("gowtham");
-//		//	author.setPersonalName("gs310");
-//		//	authorRepository.save(author);
-//
-//	 	loadAuthorsData();
-//		loadBooksData();
-//	}
+	@PostConstruct
+	public void start() {
+
+		//  Dummy record
+		//	Author author = new Author();
+		//	author.setAuthorId("1234");
+		//	author.setName("gowtham");
+		//	author.setPersonalName("gs310");
+		//	authorRepository.save(author);
+
+	 	loadAuthorsData();
+		loadBooksData();
+	}
 
 	// helper function to get the author ids from book record
 	private String getAuthorId(Map<?, ?> author) {

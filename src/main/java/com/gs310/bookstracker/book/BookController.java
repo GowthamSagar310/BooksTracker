@@ -1,11 +1,13 @@
 package com.gs310.bookstracker.book;
 
+import com.gs310.bookstracker.SecurityUtil;
+import com.gs310.bookstracker.esearch.EsBook;
+import com.gs310.bookstracker.esearch.EsBookRepository;
 import com.gs310.bookstracker.useractivity.UserActivity;
 import com.gs310.bookstracker.useractivity.UserActivityPrimaryKey;
 import com.gs310.bookstracker.useractivity.UserActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,14 +32,58 @@ public class BookController {
     * these calls are delegated to the CassandraRepository.
     * */
 
+    // cassandra
     @Autowired
     BookRepository bookRepository;
 
     @Autowired
     UserActivityRepository userActivityRepository;
 
+    @Autowired
+    EsBookRepository esBookRepository;
+
+    @GetMapping(value = "/books/{bookId}")
+    public String getBookFromSearch(@PathVariable String bookId, Model model) {
+
+        // get user details from authentication object
+        String userId = SecurityUtil.getUserId(SecurityContextHolder.getContext().getAuthentication());
+
+        Optional<EsBook> optionalEsBook = esBookRepository.findById(bookId);
+         if (optionalEsBook.isPresent()) {
+
+            EsBook esBook = optionalEsBook.get();
+            String coverImageUrl = "/images/no-image.png"; // local image
+            if (esBook.getCoverId() != null && !esBook.getCoverId().isEmpty()) {
+             coverImageUrl = COVER_IMAGE_BASE_URL + esBook.getCoverId() + "-L.jpg";
+            }
+            model.addAttribute("coverImage", coverImageUrl);
+            model.addAttribute("book", esBook);
+
+            // TODO: should move this to elastic search
+            if (userId != null) {
+                model.addAttribute("loginId", userId);
+                UserActivityPrimaryKey userActivityPrimaryKey = new UserActivityPrimaryKey();
+                userActivityPrimaryKey.setUserId(userId);
+                userActivityPrimaryKey.setBookId(bookId);
+                Optional<UserActivity> optionalUserActivity = userActivityRepository.findById(userActivityPrimaryKey);
+                if (optionalUserActivity.isPresent()) {
+                    System.out.println(optionalUserActivity.get());
+                    model.addAttribute("userActivity", optionalUserActivity.get());
+                } else {
+                    model.addAttribute("userActivity", new UserActivity());
+                }
+            }
+            return "book";
+         }
+        return "book-not-found";
+    }
+
+    /* Code for Searching books from Cassandra
+
     @GetMapping(value = "/books/{bookId}")
     public String getBook(@PathVariable String bookId, Model model, @AuthenticationPrincipal OAuth2User principal) {
+
+        // search in cassandra. TODO: move to elastic search
         Optional<Book> optionalBook =  bookRepository.findById(bookId);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
@@ -53,7 +99,6 @@ public class BookController {
                 // why do we need the whole principal.getAttribute("login") ?
                 // boolean value not enough ?
                 model.addAttribute("loginId", principal.getAttribute("login"));
-
 
                 // if the user have read this book already / have some form of interaction with the book
                 // we need to display that, if he is logged in.
@@ -79,4 +124,5 @@ public class BookController {
         return "book-not-found";
     }
 
+    */
 }

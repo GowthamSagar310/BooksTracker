@@ -1,22 +1,52 @@
 package com.gs310.bookstracker.search;
 
-import com.gs310.bookstracker.book.BookRepository;
+import com.gs310.bookstracker.esearch.EsBook;
+import com.gs310.bookstracker.esearch.EsBookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.reactive.function.client.ExchangeStrategies;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientException;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 @Controller
 public class SearchController {
 
+    @Autowired
+    private EsBookRepository esBookRepository;
+
     private final String COVER_IMAGE_BASE_URL = "http://covers.openlibrary.org/b/id/";
+
+    @GetMapping(value = "/search")
+    public String getSearchResultsByTitle(@RequestParam String title, Model model) {
+        try {
+            List<EsBook> books = esBookRepository.findEsBookByNameContaining(title);
+            // for each book results, we need to set the cover image
+            if (!books.isEmpty()) {
+                books.forEach(
+                        book -> {
+                            String coverId = book.getCoverId();
+                            if (coverId != null) {
+                                coverId = COVER_IMAGE_BASE_URL + coverId + "-M.jpg";
+                            } else {
+                                coverId = "/images/no-image.png";
+                            }
+                            book.setCoverId(coverId);
+                        }
+                );
+                model.addAttribute("searchResults", books);
+            } else {
+                model.addAttribute("noResults", true);
+            }
+            return "search";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An unexpected error occurred during the search. Please try again later.");
+            return "error/error";
+        }
+    }
+
+    /* Code for Searching books from OpenLibrary API
 
     private final WebClient webClient;
 
@@ -69,10 +99,10 @@ public class SearchController {
             return "error/error";
         } catch (Exception e) {
             model.addAttribute("errorMessage", "An unexpected error occurred during the search. Please try again later.");
-            return "error/error"; 
+            return "error/error";
         }
-
     }
 
+    */
 
 }

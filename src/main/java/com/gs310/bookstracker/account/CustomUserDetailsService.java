@@ -21,7 +21,19 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
 
         // check if the identifier is an email or username
+
         String identifierType = identifier.contains("@") ? "email" : "username";
+
+        // if (identifierType.equals("email")) {
+        //     userEntity = userRepository.findByEmail(identifier).orElseThrow(
+        //             () -> new UsernameNotFoundException("User not found with email: " + identifier)
+        //     );
+        // } else {
+        //     userEntity = userRepository.findByEmail(identifier).orElseThrow(
+        //             () -> new UsernameNotFoundException("User not found with username" + identifier)
+        //     );
+        // }
+
         UserEntity userEntity = userRepository.findByUsername(identifier).or(() -> userRepository.findByEmail(identifier)).orElseThrow(
                 () -> new UsernameNotFoundException("User not found with " + identifierType + " : " + identifier)
         );

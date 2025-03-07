@@ -11,6 +11,7 @@ public interface BooksByUserRepository extends CassandraRepository<BooksByUser, 
     // what is Slice ? what is Pageable ?
     // CassandraPageRequest
 
+    // need to change this handle email
     Slice<BooksByUser> findAllById(String userId, Pageable pageable);
 
 }

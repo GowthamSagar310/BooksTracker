@@ -1,14 +1,12 @@
 package com.gs310.bookstracker.home;
 
+import com.gs310.bookstracker.SecurityUtil;
 import com.gs310.bookstracker.userbooks.BooksByUser;
 import com.gs310.bookstracker.userbooks.BooksByUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.core.query.CassandraPageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,21 +24,10 @@ public class HomeController {
 
     @GetMapping("/home")
     public String home(Model model) {
-        String userId = null;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication != null && authentication.getPrincipal() != null) {
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof OAuth2User) {
-                OAuth2User oAuth2User = (OAuth2User) principal;
-                // change this username ?
-                userId = oAuth2User.getAttribute("mail");
-            } else if (principal instanceof UserDetails) {
-                UserDetails userDetails = (UserDetails) principal;
-                userId = userDetails.getUsername();
-            }
-        } else {
-            return "index";
-        }
+
+        // get user details from authentication object
+        String userId = SecurityUtil.getUserId(SecurityContextHolder.getContext().getAuthentication());
+
         if (userId != null) {
             Slice<BooksByUser> booksSlice = booksByUserRepository.findAllById(userId, CassandraPageRequest.of(0, 100));
             List<BooksByUser> booksByUser = booksSlice.getContent();
