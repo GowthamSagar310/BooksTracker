@@ -3,7 +3,7 @@
 A backend-focused project to track reading habits and organize books in one place.
 
 ## Notes
-If you encounter issues connecting to Astra, try switching your network. Office networks often block connections.
+1. If you encounter issues connecting to Astra, try switching your network. Office networks often block connections.
 
 ## TODO
 
