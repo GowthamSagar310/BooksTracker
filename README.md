@@ -1,17 +1,9 @@
 # BooksTracker
 
-Track your reading habits and organize all your books in one place.
+A backend-focused project to track reading habits and organize books in one place.
 
-## Pipeline
-
-1. Load the data (author and book data in that order)
-    1. Create a Cassandra instance in GCP using Datastax.
-    2. Get the secure-connect bundle (independent of Spring) from Datastax to connect to the instance.
-2. Search the data using OpenLibrary search API (move to Elasticsearch instance later).
-
-## Note
-
-1. If you are facing issues with connecting to Astra, try changing your network. If you are in an office network, it most probably won't work.
+## Notes
+If you encounter issues connecting to Astra, try switching your network. Office networks often block connections.
 
 ## TODO
 
@@ -24,11 +16,15 @@ Track your reading habits and organize all your books in one place.
 - [x] Search using title
 - [ ] Add local Elasticsearch support
 
-## Can be done but not in Scope
+## Out of Scope (possible in future)
 
 - [] Use Spring Batch to load the data.
 - [] Use Recommedation Engines to suggest books based on reading history.
 - [] Deploy the project in GCP. 
+
+## Disclaimer 
+1. This project is **not intended for production use.**
+2. It is developed **solely for educational and learning purposes.**
 
 ## Contact
 
