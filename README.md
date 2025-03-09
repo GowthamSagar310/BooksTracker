@@ -16,7 +16,7 @@ If you encounter issues connecting to Astra, try switching your network. Office 
 - [x] Search using title
 - [ ] Add local Elasticsearch support
 
-## Can be done but not in Scope
+## Out of Scope (possible in future)
 
 - [] Use Spring Batch to load the data.
 - [] Use Recommedation Engines to suggest books based on reading history.
