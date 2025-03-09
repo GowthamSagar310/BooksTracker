@@ -5,7 +5,11 @@
     <div th:fragment="search-panel" style="max-width: 800px; margin: 30px auto;">
       <form action="search.html" th:attr="action=@{/search}">
         <div class="input-group mb-3">
-          <input type="text" name="title" class="form-control" style="height: 50px" placeholder="Search for a title">
+            <select class="form-select" name="searchType" id="searchType" style="max-width: 100px;">
+                <option value="title" selected>Title</option>
+                <option value="author">Author</option>
+            </select>
+          <input type="text" name="query" class="form-control" style="height: 50px" placeholder="Search for a Title or Author" aria-label="Search" aria-describedby="button-addon2">
           <button type="submit" class="btn btn-outline-secondary" style="height: 50px" id="button-addon2">Search</button>
         </div>
       </form>

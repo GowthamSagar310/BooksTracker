@@ -1,7 +1,6 @@
 package com.gs310.bookstracker.search;
 
-import com.gs310.bookstracker.esearch.EsBook;
-import com.gs310.bookstracker.esearch.EsBookRepository;
+import com.gs310.bookstracker.esearch.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,17 +12,59 @@ import java.util.List;
 @Controller
 public class SearchController {
 
-    @Autowired
-    private EsBookRepository esBookRepository;
 
     private final String COVER_IMAGE_BASE_URL = "http://covers.openlibrary.org/b/id/";
 
+    @Autowired
+    private EsBookRepository esBookRepository;
+
+    @Autowired
+    private EsAuthorRepository esAuthorRepository;
+
     @GetMapping(value = "/search")
-    public String getSearchResultsByTitle(@RequestParam String title, Model model) {
+    public String getSearchResultsByTitle(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "title") String searchType,
+            Model model
+    ) {
         try {
-            List<EsBook> books = esBookRepository.findEsBookByNameContaining(title);
-            // for each book results, we need to set the cover image
-            if (!books.isEmpty()) {
+            List<EsBook> books = null;
+            switch (searchType) {
+                case "title":
+                    books = esBookRepository.findEsBookByName(query);
+                    break;
+                case "author":
+                    // search by author
+                    // find the authors -> get their ids -> find the books with those author ids
+
+                    // by default, elastic search won't allow queries starting with wildcard.
+                    // to make sure, partial searches on author_name work, we need to use "match" query
+
+                    /*  Elasticsearch Query
+                    *   GET authors/_search
+                        {
+                          "query": {
+                            "bool": {
+                              "must": [
+                                { "match": { "author_name": "Jacky" } },
+                                { "match": { "author_name": "Loufrani" } }
+                              ]
+                            }
+                          }
+                        }
+                    * */
+
+                    List<EsAuthor> authors = esAuthorRepository.findEsAuthorByName(query);
+                    if (authors != null && !authors.isEmpty()) {
+                        books = esBookRepository.findEsBookByAuthorIdsIn(authors.stream().map(EsAuthor::getAuthorId).toList());
+                    }
+                    break;
+                case "default":
+                    model.addAttribute("errorMessage", "Invalid search type.");
+                    return "error/error";
+            }
+
+            if (books != null && !books.isEmpty()) {
                 books.forEach(
                         book -> {
                             String coverId = book.getCoverId();

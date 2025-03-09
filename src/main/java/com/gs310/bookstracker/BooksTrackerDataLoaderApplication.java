@@ -8,7 +8,6 @@ import com.gs310.bookstracker.esearch.EsAuthor;
 import com.gs310.bookstracker.esearch.EsAuthorRepository;
 import com.gs310.bookstracker.esearch.EsBook;
 import com.gs310.bookstracker.esearch.EsBookRepository;
-import jakarta.annotation.PostConstruct;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,8 +51,8 @@ public class BooksTrackerDataLoaderApplication {
 	@Autowired
 	private Logger logger;
 
-	private final String authorDataLocation = "src/main/resources/testdata/authors-data-mini.txt";
-	private final String worksDataLocation = "src/main/resources/testdata/books-data-mini.txt";
+	private final String authorDataLocation = "src/main/resources/testdata/openlib_author_2k.txt";
+	private final String worksDataLocation = "src/main/resources/testdata/openlib_works_2k.txt";
 
 	/*
 	* if we have to get the location / path from property file, we can use the @Value annotation
@@ -218,19 +217,19 @@ public class BooksTrackerDataLoaderApplication {
 		}
 	}
 
-	@PostConstruct
-	public void start() {
-
-		//  Dummy record
-		//	Author author = new Author();
-		//	author.setAuthorId("1234");
-		//	author.setName("gowtham");
-		//	author.setPersonalName("gs310");
-		//	authorRepository.save(author);
-
-	 	loadAuthorsData();
-		loadBooksData();
-	}
+//	@PostConstruct
+//	public void start() {
+//
+//		//  Dummy record
+//		//	Author author = new Author();
+//		//	author.setAuthorId("1234");
+//		//	author.setName("gowtham");
+//		//	author.setPersonalName("gs310");
+//		//	authorRepository.save(author);
+//
+//	 	loadAuthorsData();
+//		loadBooksData();
+//	}
 
 	// helper function to get the author ids from book record
 	private String getAuthorId(Map<?, ?> author) {
