@@ -11,16 +11,17 @@ If you encounter issues connecting to Astra, try switching your network. Office 
 - [x] Add Postgres to store user identity information
 - [x] Add support for sign-in / sign-up
 - [ ] Add sign-in with Google support
-- [ ] Search inside content
-- [ ] Search using authors
+- [x] Search using authors
 - [x] Search using title
-- [ ] Add local Elasticsearch support
+- [x] Add local Elasticsearch support
 
 ## Out of Scope (possible in future)
 
-- [] Use Spring Batch to load the data.
-- [] Use Recommedation Engines to suggest books based on reading history.
-- [] Deploy the project in GCP. 
+- [ ] Use Spring Batch to load the data.
+- [ ] Use Recommedation Engines to suggest books based on reading history.
+- [ ] Deploy the project in GCP.
+- [ ] Custome Shelves (Collections)
+- [ ] Search inside content
 
 ## Disclaimer 
 1. This project is **not intended for production use.**
